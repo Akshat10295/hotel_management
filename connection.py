@@ -13,13 +13,13 @@ def MYSQLconnectionCheck ():
     global password
     while True:
         username = input("\n ENTER MYSQL SERVER'S USERNAME : ")
-        if username=='root':
+        if username=='username':
             break
         else:
             sys.stderr.write("\n Incorrect Username")
     while True:        
         password = maskpass.askpass(prompt="\n ENTER MYSQL SERVER'S PASSWORD : ",mask="*")        
-        if password=='as@10295':
+        if password=='password':
             break
         else:
             sys.stderr.write("\n Incorrect password")
