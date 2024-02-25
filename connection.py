@@ -26,7 +26,7 @@ def MYSQLconnectionCheck ():
     if connection:
         print("\n CONGRATULATIONS ! YOUR MYSQL CONNECTION HAS BEEN ESTABLISHED SUCESSFULLY !")
         cursor=connection.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS HOTEL_BARATIE ")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS HOTEL")
         cursor.execute("COMMIT")
         cursor.close()
         return connection
@@ -39,7 +39,7 @@ def MYSQLconnection():
     global connection
     global cid
     connection=mysql.connector.connect(host="localhost",user=username,passwd=password ,
-    database="HOTEL_BARATIE")
+    database="HOTEL")
     if connection:
         return connection
     else:
