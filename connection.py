@@ -1,6 +1,5 @@
 import mysql.connector
 import sys
-import random
 import maskpass
 # GLOBAL VARIABLES DECLARATION
 connection =""
