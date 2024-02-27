@@ -70,3 +70,22 @@ def userEntry():
             cursor.close()
     else:
         sys.stderr.write("\nERROR IN ESTABLISHING MYSQL CONNECTION !")
+def searchCustomer():
+    global cid
+    if connection:
+        cursor=connection.cursor()
+        createTable ='CREATE TABLE IF NOT EXISTS CUST_DETAILS(CID VARCHAR(20) unique,CUST_NAME VARCHAR(50), CUST_AGE VARCHAR(10), PHONE_NO VARCHAR(20),Cust_EMAIL VARCHAR(50));'
+        cursor.execute(createTable)
+        cid=input("ENTER CUSTOMER ID : ")
+        sql="SELECT * FROM CUST_DETAILS WHERE CID = %s;"
+        cursor.execute(sql,(cid,))
+        data=cursor.fetchall()
+        if data:
+            print(data)
+            return True
+        else:
+            sys.stderr.write("\nSORRY, Record Not Found Try Again !")
+            return False
+        cursor.close()
+    else:
+        sys.stderr.write("\nSomthing Went Wrong ,Please Try Again !")
