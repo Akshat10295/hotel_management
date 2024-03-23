@@ -11,7 +11,9 @@ roomrent =0
 restaurentbill=0
 gamingbill=0
 laundarybill=0
+totalAmount=0
 cid=""
+
 
 def MYSQLconnectionCheck ():
     global connection
@@ -436,3 +438,96 @@ def laundary():
             cursor.close()
         else:
             sys.stderr.write("\nERROR IN ESTABLISHING MYSQL CONNECTION !")
+
+def totalAmount():
+    global cid
+    customer=searchCustomer()
+    if customer:
+        global grandTotal
+        global roomrent
+        global restaurentbill
+        global laundarybill
+        global gamingbill
+        if connection:
+            cursor=connection.cursor()
+            createTable ="CREATE TABLE IF NOT EXISTS TOTAL(CID VARCHAR(20), CUST_NAME VARCHAR(30),ROOMRENT INT ,RESTAURENTBILL INT ,GAMINGBILL INT,LAUNDARYBILL INT,tax float(20.20), TOTALAMOUNT INT);"
+            cursor.execute(createTable)
+            sql= "INSERT INTO TOTAL VALUES(%s,%s,%s,%s,%s,%s,%s,%s);"
+            name = input("Enter Customer Name : ")
+            grandTotal= roomrent + restaurentbill + laundarybill + gamingbill
+            Gst=18/100*grandTotal
+            grandTotal+=Gst
+            values= (cid,name,roomrent,restaurentbill , gamingbill, laundarybill,Gst,grandTotal)
+            cursor.execute(sql,values)
+            cursor.execute("COMMIT")
+            cursor.close()
+            print("\n ***** HOTEL BARATIE ***** CUSTOMER BIILING *****")
+            print("\nCUSTOMER NAME : " ,name)
+            print("\nROOM RENT : Rs. ",roomrent)
+            print("\nRESTAURENT BILL : Rs. ",restaurentbill) 
+            print("\nLAUNDAY BILL : Rs. ",laundarybill)
+            print("\nGAMING BILL : Rs. ",gamingbill)
+            print("\nGST @ 18% : Rs. ",Gst)
+            print("___________________________________________________")
+            print("\nTotal Amount Incl of All Taxes : Rs. ",grandTotal)
+            roomrent=restaurentbill=gamingbill=laundarybill=0
+            cursor.close()
+        else:
+            sys.stderr.write("\nERROR IN ESTABLISHING MYSQL CONNECTION !")
+
+def searchOldBill():
+    global cid
+    customer=searchCustomer()
+    if customer:
+        if connection:
+            cursor=connection.cursor()
+            createTable ="CREATE TABLE IF NOT EXISTS TOTAL(CID VARCHAR(20), CUST_NAME VARCHAR(30),ROOMRENT INT ,RESTAURENTBILL INT ,GAMINGBILL INT,LAUNDARYBILL INT,tax float(20.20), TOTALAMOUNT INT);"
+            cursor.execute(createTable)
+            sql="SELECT * FROM TOTAL WHERE CID= %s;"
+            cursor.execute(sql,(cid,))
+            data=cursor.fetchall()
+            if data:
+                print(data)
+            else:
+                sys.stderr.write("\nSORRY, Record Not Found Try Again !")
+                cursor.close()
+        else:
+            sys.stderr.write("\nSomthing Went Wrong ,Please Try Again !")
+
+def all_customers():
+    if connection:
+        cursor=connection.cursor()
+        createTable ='CREATE TABLE IF NOT EXISTS CUST_DETAILS(CID VARCHAR(20) unique,CUST_NAME VARCHAR(50), CUST_AGE VARCHAR(10), PHONE_NO VARCHAR(20),Cust_EMAIL VARCHAR(50));'
+        cursor.execute(createTable)
+        sql="SELECT * FROM CUST_DETAILS;"
+        cursor.execute(sql)
+        data=cursor.fetchall()
+        if data:
+            print(data)
+            return True
+        else:
+            sys.stderr.write("\nSORRY, Records Not Found Try Again !")
+            return False
+        cursor.close()
+
+    else:
+        sys.stderr.write("\nSomthing Went Wrong ,Please Try Again !")
+
+def all_bills():
+    if connection:
+        cursor=connection.cursor()
+        createTable ="CREATE TABLE IF NOT EXISTS TOTAL(CID VARCHAR(20), CUST_NAME VARCHAR(30),ROOMRENT INT ,RESTAURENTBILL INT ,GAMINGBILL INT,LAUNDARYBILL INT,tax float(20.20), TOTALAMOUNT INT);"
+        cursor.execute(createTable)
+        sql="SELECT * FROM TOTAL;"
+        cursor.execute(sql)
+        data=cursor.fetchall()
+        if data:
+            print(data)
+            return True
+        else:
+            sys.stderr.write("\nSORRY, Records Not Found Try Again !")
+            return False
+        cursor.close()
+
+    else:
+        sys.stderr.write("\nSomthing Went Wrong ,Please Try Again !")
