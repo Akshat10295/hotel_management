@@ -531,3 +531,55 @@ def all_bills():
 
     else:
         sys.stderr.write("\nSomthing Went Wrong ,Please Try Again !")
+
+print("****************************************************** HOTEL BARATIE *********************************************************")
+connection = MYSQLconnectionCheck()
+if connection:
+    MYSQLconnection()
+    while(True):
+        print("""
+                WELCOME
+        1--->Enter Customer Details
+        2--->Booking
+        3--->Calculate Room Rent
+        4--->Calculate Restaurant Bill
+        5--->Calculate Gaming Bill
+        6--->Calculate laundary Bill
+        7--->Display Customer Details
+        8--->GENERATE TOTAL BILL AMOUNT
+        9--->GENERATE OLD BILL
+        10--->Show All Customers
+        11--->Show All Bills
+        12--->EXIT
+        """)
+        choice = input("\nEnter Your Choice: ")
+        if choice =='1':
+            userEntry()
+        elif choice =='2':
+            booking()
+        elif choice =='3':
+            roomRent()
+        elif choice =='4':
+            Restaurent()
+        elif choice =='5':
+            Gaming()
+        elif choice =='6':
+            laundary()
+        elif choice =='7':
+            searchCustomer()
+        elif choice =='8':
+            totalAmount()
+        elif choice =='9':
+            searchOldBill()
+        elif choice =='10':
+            all_customers()
+        elif choice =='11':
+            all_bills()
+        elif choice =='12':
+            print("############################################# THANK YOU, VISIT AGAIN #############################################")
+            break
+        else:
+            sys.stderr.write("Sorry ,May Be You Are Giving Me Wrong Input, Please Try Again !!! ")
+else:
+    sys.stderr.write("\nERROR ESTABLISHING MYSQL CONNECTION !")
+# END OF PROJECT
